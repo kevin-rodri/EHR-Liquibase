@@ -1,0 +1,188 @@
+# Author: Kevin Rodriguez
+# Date: November 2nd, 2024
+# Remarks: This change log is intended to get the three main tables needed for the EHR application.
+# This should also be helpful to anyone who's working on a liquibase ticket :)
+# Note: Refer to the database document to help with creating tables.
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: kevin-rodri
+      changes:
+        - createTable:
+            tableName: user
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: user_primary_key
+              - column:
+                  name: section_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: username
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: full_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role
+                  type: ENUM('STUDENT', 'ADMIN', 'INSTRUCTOR')
+                  defaultValue: 'Student'
+                  constraints:
+                    nullable: false
+            foreignKeys:
+              - foreignKeyConstraint:
+                  baseColumnNames: section_id
+                  baseTableName: user
+                  referencedTableName: section
+                  referencedColumnNames: id
+                  onDelete: SET NULL
+
+        - createTable:
+            tableName: section
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: section_primary_key
+              - column:
+                  name: section_name
+                  type: VARCHAR(25)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: patient_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+            foreignKeys:
+              - foreignKeyConstraint:
+                  baseColumnNames: user_id
+                  baseTableName: section
+                  referencedTableName: user
+                  referencedColumnNames: id
+              - foreignKeyConstraint:
+                  baseColumnNames: patient_id
+                  baseTableName: section
+                  referencedTableName: patient
+                  referencedColumnNames: id
+
+        - createTable:
+            tableName: patient
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: section_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: date_of_birth
+                  type: DATE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: religion
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: full_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: weight
+                  type: DECIMAL(5,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: height
+                  type: DECIMAL(5,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: has_insurance
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: has_advanced_directives
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: allergies
+                  type: JSON
+                  constraints:
+                    nullable: true
+              - column:
+                  name: emergency_contact_full_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: emergency_contact_phone_number
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: code_status
+                  type: ENUM('FULL_CODE', 'DOES-NOTE-RESUSCITATE')
+                  constraints:
+                    nullable: false
+              - column:
+                  name: precautions
+                  type: ENUM('PRECAUTIONS', 'CONTACT', 'DROPLET', 'TUBERCULOSIS', 'AIRBORNE')
+                  constraints:
+                    nullable: false
+            foreignKeys:
+              - foreignKeyConstraint:
+                  baseColumnNames: section_id
+                  baseTableName: patient
+                  referencedTableName: section
+                  referencedColumnNames: id
+                  onDelete: SET NULL
+
+        # This is what will generate ids: https://dev.mysql.com/doc/refman/8.4/en/miscellaneous-functions.html#function_uuid
+        - addDefaultValue:
+            columnName: id
+            tableName: user
+            defaultValueComputed: "UUID()"
+        - addDefaultValue:
+            columnName: id
+            tableName: section
+            defaultValueComputed: "UUID()"
+        - addDefaultValue:
+            columnName: id
+            tableName: patient
+            defaultValueComputed: "UUID()"

@@ -1,0 +1,43 @@
+# Liquibase generated files and directories
+liquibase.properties
+liquibase-output.log
+liquibase.lock
+*.csv
+
+# Database change logs and backups (optional, depending on your use case)
+db/changelog/*.backup
+db/changelog/*.tmp
+db/changelog/*.bak
+db/changelog/*~*
+
+# Ignore any potential Maven or Gradle build files
+target/
+build/
+*.jar
+*.war
+*.ear
+
+# IDE-specific files and directories
+/.idea/
+/.vscode/
+*.iml
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Ignore environment-specific configuration files
+*.env
+.env.*
+
+# Logs and temporary files
+*.log
+*.tmp
+*.swp
+*.swo
+*~
+
+# Ignore node_modules and npm log files if using npm for any scripts
+node_modules/
+npm-debug.log
+yarn-error.log
