@@ -1,5 +1,4 @@
 # Liquibase generated files and directories
-liquibase.properties
 liquibase-output.log
 liquibase.lock
 *.csv
