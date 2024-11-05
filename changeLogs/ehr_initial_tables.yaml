@@ -157,7 +157,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: code_status
-                  type: ENUM('FULL_CODE', 'DOES-NOTE-RESUSCITATE')
+                  type: ENUM('FULL_CODE', 'DOES-NOT-RESUSCITATE')
                   constraints:
                     nullable: false
               - column:
