@@ -44,13 +44,6 @@ databaseChangeLog:
                   defaultValue: 'Student'
                   constraints:
                     nullable: false
-            foreignKeys:
-              - foreignKeyConstraint:
-                  baseColumnNames: section_id
-                  baseTableName: user
-                  referencedTableName: section
-                  referencedColumnNames: id
-                  onDelete: SET NULL
 
         - createTable:
             tableName: section
@@ -77,17 +70,6 @@ databaseChangeLog:
                   type: VARCHAR(36)
                   constraints:
                     nullable: false
-            foreignKeys:
-              - foreignKeyConstraint:
-                  baseColumnNames: user_id
-                  baseTableName: section
-                  referencedTableName: user
-                  referencedColumnNames: id
-              - foreignKeyConstraint:
-                  baseColumnNames: patient_id
-                  baseTableName: section
-                  referencedTableName: patient
-                  referencedColumnNames: id
 
         - createTable:
             tableName: patient
@@ -165,13 +147,36 @@ databaseChangeLog:
                   type: ENUM('PRECAUTIONS', 'CONTACT', 'DROPLET', 'TUBERCULOSIS', 'AIRBORNE')
                   constraints:
                     nullable: false
-            foreignKeys:
-              - foreignKeyConstraint:
-                  baseColumnNames: section_id
-                  baseTableName: patient
-                  referencedTableName: section
-                  referencedColumnNames: id
-                  onDelete: SET NULL
+
+        - addForeignKeyConstraint:
+            constraintName: user_section_id_foreign_key
+            baseColumnNames: section_id
+            baseTableName: user
+            referencedTableName: section
+            referencedColumnNames: id
+            onDelete: SET NULL
+
+        - addForeignKeyConstraint:
+            constraintName: section_user_id_foreign_key
+            baseColumnNames: user_id
+            baseTableName: section
+            referencedTableName: user
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            constraintName: section_patient_id_foreign_key
+            baseColumnNames: patient_id
+            baseTableName: section
+            referencedTableName: patient
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            constraintName: patient_section_id_foreign_key
+            baseColumnNames: section_id
+            baseTableName: patient
+            referencedTableName: section
+            referencedColumnNames: id
+            onDelete: SET NULL
 
         # This is what will generate ids: https://dev.mysql.com/doc/refman/8.4/en/miscellaneous-functions.html#function_uuid
         - addDefaultValue:
