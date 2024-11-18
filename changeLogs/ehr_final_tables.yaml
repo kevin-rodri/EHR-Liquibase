@@ -1,0 +1,272 @@
+# Author: Charlize Aponte
+# Date: November 16, 2024
+# Remarks: This change log defines the tables needed for the EHR application, including patient history, orders, medications, lab values, and additional tables for urine output, IV and lines, waldo diagram, and notes.
+
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: charlize-apon
+      changes:
+        - createTable:
+            tableName: output
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: output_primary_key
+              - column:
+                  name: patient_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: ENUM('URINE VOIDED', 'FOLEY')
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: date_and_time_taken
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: iv_and_lines
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: iv_and_lines_primary_key
+              - column:
+                  name: patient_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: iv_type
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: size
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: location
+                  type: VARCHAR(250)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: fluid_or_med_name
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: fluid_or_med_rate
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: patent
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_clinical_documentation_improvement(CDI)
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_by
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_by
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: waldo_diagram
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: waldo_diagram_primary_key
+              - column:
+                  name: patient_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: wound_drain_locations
+                  type: JSON
+                  constraints:
+                    nullable: false
+              - column:
+                  name: surgical_wound_note
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: pressure_sore_note
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: trauma_wound_note
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: drain_note
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_by
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_by
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: note
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: note_primary_key
+              - column:
+                  name: patient_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: title
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(1256)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_by
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_by
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            constraintName: output_patient_id_fk
+            baseColumnNames: patient_id
+            baseTableName: output
+            referencedTableName: patient
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - addForeignKeyConstraint:
+            constraintName: iv_and_lines_patient_id_fk
+            baseColumnNames: patient_id
+            baseTableName: iv_and_lines
+            referencedTableName: patient
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - addForeignKeyConstraint:
+            constraintName: waldo_diagram_patient_id_fk
+            baseColumnNames: patient_id
+            baseTableName: waldo_diagram
+            referencedTableName: patient
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - addForeignKeyConstraint:
+            constraintName: note_patient_id_fk
+            baseColumnNames: patient_id
+            baseTableName: note
+            referencedTableName: patient
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - addDefaultValue:
+            columnName: id
+            tableName: output
+            defaultValueComputed: "UUID()"
+        - addDefaultValue:
+            columnName: id
+            tableName: iv_and_lines
+            defaultValueComputed: "UUID()"
+        - addDefaultValue:
+            columnName: id
+            tableName: waldo_diagram
+            defaultValueComputed: "UUID()"
+        - addDefaultValue:
+            columnName: id
+            tableName: note
+            defaultValueComputed: "UUID()"

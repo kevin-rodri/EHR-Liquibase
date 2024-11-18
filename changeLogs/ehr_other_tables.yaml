@@ -1,0 +1,174 @@
+# Author: Charlize Aponte
+# Date: November 16, 2024
+# Remarks: Defines tables for the EHR application, including patient history, orders, medications, lab values, and new tables: vital signs, patient pain scale, and intake.
+
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: charlize-apon
+      changes:
+        - createTable:
+            tableName: vital_signs
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: vital_signs_primary_key
+              - column:
+                  name: patient_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: patient_pain_scale_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: heart_rate
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: blood_pressure_systolic
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: blood_pressure_diastolic
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: respiratory_rate
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: o2_percent_saturation
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: temperature
+                  type: DECIMAL(5, 2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: accu_check_value
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_by
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_by
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: patient_pain_scale
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: patient_pain_scale_primary_key
+              - column:
+                  name: scale_name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: scale_value
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: intake
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: intake_primary_key
+              - column:
+                  name: patient_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: ENUM('PO', 'TUBE FEEDING', 'IV')
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: date_and_time_taken
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            constraintName: vital_signs_patient_id_fk
+            baseColumnNames: patient_id
+            baseTableName: vital_signs
+            referencedTableName: patient
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - addForeignKeyConstraint:
+            constraintName: vital_signs_pain_scale_fk
+            baseColumnNames: patient_pain_scale_id
+            baseTableName: vital_signs
+            referencedTableName: patient_pain_scale
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            constraintName: intake_patient_id_fk
+            baseColumnNames: patient_id
+            baseTableName: intake
+            referencedTableName: patient
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - addDefaultValue:
+            columnName: id
+            tableName: vital_signs
+            defaultValueComputed: "UUID()"
+        - addDefaultValue:
+            columnName: id
+            tableName: patient_pain_scale
+            defaultValueComputed: "UUID()"
+        - addDefaultValue:
+            columnName: id
+            tableName: intake
+            defaultValueComputed: "UUID()"

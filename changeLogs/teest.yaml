@@ -1,0 +1,252 @@
+# Author: Charlize Aponte
+# Date: November 16, 2024
+# Remarks: This change log defines the tables needed for the EHR application, including patient history, orders, medications, and lab values.
+# Note: Refer to the database document to help with creating tables.
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: charlize-apon
+      changes:
+        - createTable:
+            tableName: patient_history
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: patient_history_primary_key
+              - column:
+                  name: patient_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: ENUM('Primary Admitting Diagnosis', 'Medical/Surgical History', 'Social History', 'Family History')
+                  constraints:
+                    nullable: false
+              - column:
+                  name: title
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(1256)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: created_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: patient_orders
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: patient_orders_primary_key
+              - column:
+                  name: patient_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: order_title
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(1256)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: patient_medications
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: patient_medications_primary_key
+              - column:
+                  name: patient_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: drug_name
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: scheduled_time
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: dose
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: route
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: med_name
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_scheduled
+                  type: BOOLEAN
+                  defaultValueBoolean: true
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_by
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_by
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: lab_values
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: lab_values_primary_key
+              - column:
+                  name: patient_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: element_name
+                  type: VARCHAR(5)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: element_value
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_by
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_by
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            constraintName: patient_history_patient_id_fk
+            baseColumnNames: patient_id
+            baseTableName: patient_history
+            referencedTableName: patient
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - addForeignKeyConstraint:
+            constraintName: patient_orders_patient_id_fk
+            baseColumnNames: patient_id
+            baseTableName: patient_orders
+            referencedTableName: patient
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - addForeignKeyConstraint:
+            constraintName: patient_medications_patient_id_fk
+            baseColumnNames: patient_id
+            baseTableName: patient_medications
+            referencedTableName: patient
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - addForeignKeyConstraint:
+            constraintName: lab_values_patient_id_fk
+            baseColumnNames: patient_id
+            baseTableName: lab_values
+            referencedTableName: patient
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+
+        - addDefaultValue:
+            columnName: id
+            tableName: patient_history
+            defaultValueComputed: "UUID()"
+        - addDefaultValue:
+            columnName: id
+            tableName: patient_orders
+            defaultValueComputed: "UUID()"
+        - addDefaultValue:
+            columnName: id
+            tableName: lab_values
+            defaultValueComputed: "UUID()"
