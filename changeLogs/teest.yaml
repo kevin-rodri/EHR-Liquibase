@@ -5,7 +5,7 @@
 databaseChangeLog:
   - changeSet:
       id: 1
-      author: charlize-apon
+      author: charlize-apo
       changes:
         - createTable:
             tableName: patient_history

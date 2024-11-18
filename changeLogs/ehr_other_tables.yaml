@@ -5,7 +5,7 @@
 databaseChangeLog:
   - changeSet:
       id: 2
-      author: charlize-apon
+      author: charlize-apo
       changes:
         - createTable:
             tableName: vital_signs
