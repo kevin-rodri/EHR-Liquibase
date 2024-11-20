@@ -3,5 +3,9 @@
 # Note: This file will execute the changelog files in the order they're added.
 databaseChangeLog:
   - include:
-      file: changeLogs/ehr_initial_tables.yaml
+        file: changeLogs/ehr_initial_tables.yaml
+  - include:
+      file: changeLogs/assessments.yaml
+  - include:
+      file: changeLogs/ehr_first_half_tables.yaml
       # follow the same format -> file: changeLogs/<name-of-file>.yaml

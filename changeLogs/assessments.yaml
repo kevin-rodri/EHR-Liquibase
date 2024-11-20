@@ -1,0 +1,31 @@
+# Author: Kevin Rodriguez
+# Date: November 17, 2024
+# Remarks: This change log is intended to create the assessments table needed - this will unblock anyone working on assessment tables :)
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: kevin-rodri
+      changes:
+        - createTable:
+            tableName: assessments
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: assessments_primary_key
+              - column:
+                  name: patient_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: true
+
+        - addForeignKeyConstraint:
+            constraintName: assessment_patient_id_foreign_key
+            baseColumnNames: patient_id
+            baseTableName: assessments
+            referencedTableName: patient
+            referencedColumnNames: id
+            onDelete: SET NULL
