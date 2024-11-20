@@ -1,6 +1,8 @@
 # Author: Charlize Aponte
 # Date: November 16, 2024
-# Remarks: This change log defines the tables needed for the EHR application, including patient history, orders, medications, and lab values.
+# Remarks: This change log defines the tables needed for the EHR application, including Patient History, Patient Orders,
+# Patient Medications, Lab Values, Vital Signs, Patient Pain Scale, Intake,
+# Output, IVs and Lines, Waldo Diagram, and Notes.
 # Note: Refer to the database document to help with creating tables.
 databaseChangeLog:
   - changeSet:
