@@ -1,0 +1,21 @@
+# Author: Gabby Pierce
+# Date: November 27nd, 2024
+# Remarks: A trigger for the Patient History table - this to auto generate the required history records every patient needs
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: gabbypierce
+      changes:
+        -  sql:
+              CREATE TRIGGER patient_history_trigger
+              AFTER INSERT ON ehr.patient
+              FOR EACH ROW
+              BEGIN
+                INSERT INTO ehr.patient_history (patient_id, type, title, created_date, modified_date)
+                VALUES
+                (NEW.id, 'Primary Admitting Diagnosis', 'Primary Admitting Diagnosis', NOW(), NOW()),
+                (NEW.id, 'Medical/Surgical History', 'Medical/Surgical History', NOW(), NOW()),
+                (NEW.id, 'Social History', 'Social History', NOW(), NOW()),
+                (NEW.id, 'Family History', 'Family History', NOW(), NOW());
+              END;
+

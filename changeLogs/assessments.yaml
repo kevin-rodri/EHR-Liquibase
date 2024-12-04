@@ -29,3 +29,8 @@ databaseChangeLog:
             referencedTableName: patient
             referencedColumnNames: id
             onDelete: SET NULL
+
+        - addDefaultValue:
+            columnName: id
+            tableName: assessments
+            defaultValueComputed: "UUID()"

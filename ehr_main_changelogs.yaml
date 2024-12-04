@@ -10,4 +10,8 @@ databaseChangeLog:
       file: changeLogs/ehr_first_half_tables.yaml
   - include:
       file: changeLogs/ehr_second_half_tables.yaml
+  - include:
+      file: changeLogs/patient_history_trigger.yaml
+  - include:
+      file: changeLogs/patient_assessment_trigger.yaml
     # follow the same format -> file: changeLogs/<name-of-file>.yaml

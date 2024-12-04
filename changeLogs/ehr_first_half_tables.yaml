@@ -504,53 +504,53 @@ databaseChangeLog:
                   constraints:
                     nullable: false
 
-              - createTable:
-                  tableName: note
-                  columns:
-                    - column:
-                        name: id
-                        type: VARCHAR(36)
-                        constraints:
-                          primaryKey: true
-                          nullable: false
-                          primaryKeyName: note_primary_key
-                    - column:
-                        name: patient_id
-                        type: VARCHAR(36)
-                        constraints:
-                          nullable: false
-                    - column:
-                        name: title
-                        type: VARCHAR(100)
-                        constraints:
-                          nullable: false
-                    - column:
-                        name: description
-                        type: VARCHAR(1256)
-                        constraints:
-                          nullable: false
-                    - column:
-                        name: created_by
-                        type: VARCHAR(255)
-                        constraints:
-                          nullable: false
-                    - column:
-                        name: created_date
-                        type: TIMESTAMP
-                        defaultValueComputed: "NOW()"
-                        constraints:
-                          nullable: false
-                    - column:
-                        name: modified_by
-                        type: VARCHAR(255)
-                        constraints:
-                          nullable: false
-                    - column:
-                        name: modified_date
-                        type: TIMESTAMP
-                        defaultValueComputed: "NOW()"
-                        constraints:
-                          nullable: false
+        - createTable:
+            tableName: note
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: note_primary_key
+              - column:
+                  name: patient_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: title
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(1256)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_by
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_by
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
 
         - addForeignKeyConstraint:
             constraintName: patient_history_patient_id_foreign_key

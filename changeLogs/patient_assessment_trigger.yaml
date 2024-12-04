@@ -1,0 +1,17 @@
+# Author: Charlize Aponte
+# Date: November 27nd, 2024
+# Remarks: A trigger for the Assessment table - this is based on database design
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: charlize-apo
+      changes:
+        - sql:
+            CREATE TRIGGER patient_assessment_trigger
+            AFTER INSERT ON ehr.patient
+            FOR EACH ROW
+            BEGIN
+            INSERT INTO ehr.assessments (patient_id)
+            VALUES (NEW.id);
+            END;
+
