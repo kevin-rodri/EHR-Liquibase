@@ -1,0 +1,254 @@
+# Author: Kevin Rodriguez
+# Date: January 18,2025
+# Remarks: These should include all the tables needed for the EHR application.
+# This should be the final schema change...
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: kevin-rodri
+      changes:
+        - createTable:
+            tableName: user
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: user_primary_key
+              - column:
+                  name: username
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: full_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role
+                  type: ENUM('STUDENT', 'ADMIN', 'INSTRUCTOR')
+                  defaultValue: 'STUDENT'
+                  constraints:
+                    nullable: false
+              - column:
+                  name: feature_flags
+                  type: JSON
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: patient
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: patient_primary_key
+              - column:
+                  name: medical_registration_number
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: date_of_birth
+                  type: DATE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: religion
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: full_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: weight
+                  type: DECIMAL(5,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: height
+                  type: DECIMAL(5,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: has_insurance
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: has_advanced_directives
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: allergies
+                  type: JSON
+                  constraints:
+                    nullable: true
+              - column:
+                  name: emergency_contact_full_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: emergency_contact_phone_number
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: code_status
+                  type: ENUM('FULL_CODE', 'DOES-NOT-RESUSCITATE')
+                  constraints:
+                    nullable: false
+              - column:
+                  name: precautions
+                  type: ENUM('PRECAUTIONS', 'CONTACT', 'DROPLET', 'TUBERCULOSIS', 'AIRBORNE')
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: section
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: section_primary_key
+              - column:
+                  name: section_name
+                  type: VARCHAR(25)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: instructor_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: section_roster
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: section_roster_primary_key
+              - column:
+                  name: section_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role
+                  type: ENUM('STUDENT', 'ADMIN', 'INSTRUCTOR')
+                  defaultValue: 'STUDENT'
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: section_patient
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: section_patient_primary_key
+              - column:
+                  name: section_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: patient_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: date_assigned
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            constraintName: section_instructor_id_foreign_key
+            baseColumnNames: instructor_id
+            baseTableName: section
+            referencedTableName: user
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            constraintName: section_roster_section_id_foreign_key
+            baseColumnNames: section_id
+            baseTableName: section_roster
+            referencedTableName: section
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            constraintName: section_roster_user_id_foreign_key
+            baseColumnNames: user_id
+            baseTableName: section_roster
+            referencedTableName: user
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            constraintName: section_patient_section_id_foreign_key
+            baseColumnNames: section_id
+            baseTableName: section_patient
+            referencedTableName: section
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            constraintName: section_patient_patient_id_foreign_key
+            baseColumnNames: patient_id
+            baseTableName: section_patient
+            referencedTableName: patient
+            referencedColumnNames: id
+
+        - addDefaultValue:
+            columnName: id
+            tableName: user
+            defaultValueComputed: "UUID()"
+        - addDefaultValue:
+            columnName: id
+            tableName: patient
+            defaultValueComputed: "UUID()"
+        - addDefaultValue:
+            columnName: id
+            tableName: section
+            defaultValueComputed: "UUID()"
+        - addDefaultValue:
+            columnName: id
+            tableName: section_roster
+            defaultValueComputed: "UUID()"
+        - addDefaultValue:
+            columnName: id
+            tableName: section_patient
+            defaultValueComputed: "UUID()"
