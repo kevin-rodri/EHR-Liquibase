@@ -1,0 +1,21 @@
+# Author: Kevin Rodriguez
+# Date: January 19 2025
+# Remarks: A trigger that adds an administrator to a section
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: kevin_rodri
+      changes:
+        - sql:
+            sql: |
+              CREATE TRIGGER section_roster_trigger
+              AFTER INSERT ON section
+              FOR EACH ROW
+              BEGIN
+                INSERT INTO section_roster (id, section_id, user_id, role)
+                SELECT UUID(), NEW.id, id, 'ADMIN'
+                FROM user
+                WHERE role = 'ADMIN'
+                LIMIT 1;
+              END;
+

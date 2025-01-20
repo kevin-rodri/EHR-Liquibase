@@ -1,0 +1,1472 @@
+# Author: Kevin Rodriguez
+# Date: January 19 2025
+# Remarks: This adds all the additional tables needed for the application
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: kevin-rodri
+      changes:
+        - createTable:
+            tableName: patient_history
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: patient_history_primary_key
+              - column:
+                  name: patient_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: ENUM('Primary Admitting Diagnosis', 'Medical/Surgical History', 'Social History', 'Family History')
+                  constraints:
+                    nullable: false
+              - column:
+                  name: title
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(1256)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: created_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: patient_orders
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: patient_orders_primary_key
+              - column:
+                  name: patient_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: order_title
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(1256)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: medications
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: medications_primary_key
+              - column:
+                  name: drug_name
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: generic_name
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: patient_medications
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: patient_medications_primary_key
+              - column:
+                  name: section_patient_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: medication_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: medication_type
+                  type: ENUM('SCHEDULED', 'PRN', 'AT-HOME')
+                  constraints:
+                    nullable: false
+              - column:
+                  name: scheduled_time
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: dose
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: route
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: dose_frequency
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_by
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_by
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: lab_values
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: lab_values_primary_key
+              - column:
+                  name: section_patient_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: element_name
+                  type: VARCHAR(5)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: element_value
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_by
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_by
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: pain_scale
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: pain_scale_primary_key
+              - column:
+                  name: scale_name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: pain_scale_result
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: pain_scale_result_primary_key
+              - column:
+                  name: patient_section_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: pain_scale_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: pain_scale_value
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: pain_scale_text
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: created_by
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_by
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: vital_signs
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: vital_signs_primary_key
+              - column:
+                  name: section_patient_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: temperature
+                  type: DECIMAL(5,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: temperature_source
+                  type: ENUM('TEMPORAL', 'RECTAL', 'ORAL', 'AXILLA')
+                  constraints:
+                    nullable: false
+              - column:
+                  name: heart_rate
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: heart_rate_source
+                  type: ENUM('MONITOR', 'MANUAL')
+                  constraints:
+                    nullable: false
+              - column:
+                  name: blood_pressure_systolic
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: blood_pressure_diastolic
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: blood_pressure_source
+                  type: ENUM('MONITOR', 'MANUAL')
+                  constraints:
+                    nullable: false
+              - column:
+                  name: blood_pressure_cuff_location
+                  type: ENUM('RIGHT ARM', 'LEFT ARM', 'RIGHT LEG', 'LEFT LEG')
+                  constraints:
+                    nullable: false
+              - column:
+                  name: patient_position
+                  type: ENUM('SUPINE', 'SITTING', 'STANDING')
+                  constraints:
+                    nullable: false
+              - column:
+                  name: respiratory_rate
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: o2_percent_saturation
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: oxygen_source
+                  type: ENUM('ROOM AIR', 'NASAL CANULA', 'MASK', 'NON-REBREATHER', 'VENTURI', 'SIMPLE MASK', 'VENT')
+                  constraints:
+                    nullable: false
+              - column:
+                  name: fiO2_percent
+                  type: INTEGER
+                  constraints:
+                    nullable: true
+              - column:
+                  name: liters
+                  type: INTEGER
+                  constraints:
+                    nullable: true
+              - column:
+                  name: accu_check_value
+                  type: INTEGER
+                  constraints:
+                    nullable: true
+              - column:
+                  name: created_by
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_by
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: intake_output
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: intake_output_primary_key
+              - column:
+                  name: section_patient_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: type
+                  type: ENUM('PO', 'TUBE FEEDING', 'IV','URINE VOIDED', 'FOLEY')
+                  constraints:
+                    nullable: false
+              - column:
+                  name: intake_or_output
+                  type: ENUM('INTAKE', 'OUTPUT')
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount
+                  type: DECIMAL(5,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: date_and_time_taken
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_by
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_by
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: waldo_diagram
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: waldo_diagram_primary_key
+              - column:
+                  name: section_patient_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: wound_drain_locations
+                  type: JSON
+                  constraints:
+                    nullable: false
+              - column:
+                  name: surgical_wound_note
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: pressure_sore_note
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: trauma_wound_note
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: drain_note
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_by
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_by
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: adl
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: adl_primary_key
+              - column:
+                  name: section_patient_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: has_oral_care
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: has_bathed
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: reposition
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: elimination_needed
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_meal_given
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount_meal_consumed
+                  type: DECIMAL(5, 2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_by
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_by
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: note
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: note_primary_key
+              - column:
+                  name: section_patient_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: title
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(1256)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_by
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_by
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: gastrointestinal_info
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: gastrointestinal_info_primary_key
+              - column:
+                  name: section_patient_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: right_upper_quadrant
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: right_lower_quadrant
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: lower_upper_quadrant
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: lower_lower_quadrant
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: stool
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_bowel_movement
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: gastric_tubic_note
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_by
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_by
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: musculoskeletal_info
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: musculoskeletal_info_primary_key
+              - column:
+                  name: section_patient_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: adl_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: left_upper_extremity
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: left_lower_extremity
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: right_upper_extremity
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: right_lower_extremity
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: gait
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: abnormalities
+                  type: VARCHAR(1000)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: created_by
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_by
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: genitourinary_info
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: genitourinary_info_primary_key
+              - column:
+                  name: section_patient_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: urinary_assessment
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: urinary_diversion_notes
+                  type: VARCHAR(1000)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: urinary_route
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: urine_color
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: urine_characteristics
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: urine_odor
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: has_dialysis
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: date_of_last_treatment
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: dialysis_access_type
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: has_dialysis_access_dressing_cdi
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: foley_catheter
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: foley_removed
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_by
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_by
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: respiratory_info
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: respiratory_info_primary_key
+              - column:
+                  name: section_patient_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: breathing_pattern
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: breathing_effort
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: anterior_right_upper_lobe
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: posterior_right_upper_lobe
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: anterior_lower_upper_lobe
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: posterior_lower_upper_lobe
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: anterior_right_middle_lobe
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: posterior_right_middle_lobe
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: anterior_right_lower_lobe
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: posterior_right_lower_lobe
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: anterior_left_lower_lobe
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: posterior_left_lower_lobe
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: has_continuous_oxygen_pulse
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: has_oxygen_support
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: oxygen_support_device
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: oxygen_flow_rate
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: sputum_amount
+                  type: DECIMAL(5,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: sputum_color
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: has_incentive_spirometer_use
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: chest_tube_location
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: chest_tube_suction
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: created_by
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_by
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+
+
+        - createTable:
+            tableName: neurological_info
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: neurological_info_primary_key
+              - column:
+                  name: section_patient_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: left_pupil_reaction
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: left_pupil_size
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: right_pupil_reaction
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: right_pupil_size
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_person_conscious
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_person_conscious_of_place
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_person_conscious_of_time
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: alertness_description
+                  type: VARCHAR(1000)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: strength_left_upper_extremity_grip
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: strength_left_upper_extremity_sensation
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: strength_right_upper_extremity_grip
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: left_lower_extremity_strength
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: left_lower_extremity_sensation
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: right_lower_extremity_strength
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: right_lower_extremity_sensation
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: neurological_note
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_by
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_by
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_date
+                  type: TIMESTAMP
+                  defaultValueComputed: "NOW()"
+                  constraints:
+                    nullable: false
+
+
+        # Add default UUID values to all ID columns
+        - addDefaultValue:
+            columnName: id
+            tableName: patient_history
+            defaultValueComputed: "UUID()"
+        - addDefaultValue:
+            columnName: id
+            tableName: patient_orders
+            defaultValueComputed: "UUID()"
+        - addDefaultValue:
+            columnName: id
+            tableName: medications
+            defaultValueComputed: "UUID()"
+        - addDefaultValue:
+            columnName: id
+            tableName: patient_medications
+            defaultValueComputed: "UUID()"
+        - addDefaultValue:
+            columnName: id
+            tableName: lab_values
+            defaultValueComputed: "UUID()"
+        - addDefaultValue:
+            columnName: id
+            tableName: pain_scale
+            defaultValueComputed: "UUID()"
+        - addDefaultValue:
+            columnName: id
+            tableName: pain_scale_result
+            defaultValueComputed: "UUID()"
+        - addDefaultValue:
+            columnName: id
+            tableName: vital_signs
+            defaultValueComputed: "UUID()"
+        - addDefaultValue:
+            columnName: id
+            tableName: intake_output
+            defaultValueComputed: "UUID()"
+        - addDefaultValue:
+            columnName: id
+            tableName: waldo_diagram
+            defaultValueComputed: "UUID()"
+        - addDefaultValue:
+            columnName: id
+            tableName: adl
+            defaultValueComputed: "UUID()"
+        - addDefaultValue:
+            columnName: id
+            tableName: note
+            defaultValueComputed: "UUID()"
+        - addDefaultValue:
+            columnName: id
+            tableName: gastrointestinal_info
+            defaultValueComputed: "UUID()"
+        - addDefaultValue:
+            columnName: id
+            tableName: musculoskeletal_info
+            defaultValueComputed: "UUID()"
+        - addDefaultValue:
+            columnName: id
+            tableName: genitourinary_info
+            defaultValueComputed: "UUID()"
+        - addDefaultValue:
+            columnName: id
+            tableName: respiratory_info
+            defaultValueComputed: "UUID()"
+        - addDefaultValue:
+            columnName: id
+            tableName: neurological_info
+            defaultValueComputed: "UUID()"
+
+        # Add foreign key constraints for section_patient_id
+        - addForeignKeyConstraint:
+            baseTableName: patient_medications
+            baseColumnNames: section_patient_id
+            referencedTableName: section_patient
+            referencedColumnNames: id
+            constraintName: patient_medications_section_patient_id_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: lab_values
+            baseColumnNames: section_patient_id
+            referencedTableName: section_patient
+            referencedColumnNames: id
+            constraintName: lab_values_section_patient_id_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: vital_signs
+            baseColumnNames: section_patient_id
+            referencedTableName: section_patient
+            referencedColumnNames: id
+            constraintName: vital_signs_section_patient_id_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: intake_output
+            baseColumnNames: section_patient_id
+            referencedTableName: section_patient
+            referencedColumnNames: id
+            constraintName: intake_output_section_patient_id_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: waldo_diagram
+            baseColumnNames: section_patient_id
+            referencedTableName: section_patient
+            referencedColumnNames: id
+            constraintName: waldo_diagram_section_patient_id_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: adl
+            baseColumnNames: section_patient_id
+            referencedTableName: section_patient
+            referencedColumnNames: id
+            constraintName: adl_section_patient_id_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: gastrointestinal_info
+            baseColumnNames: section_patient_id
+            referencedTableName: section_patient
+            referencedColumnNames: id
+            constraintName: gastrointestinal_info_section_patient_id_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: musculoskeletal_info
+            baseColumnNames: section_patient_id
+            referencedTableName: section_patient
+            referencedColumnNames: id
+            constraintName: musculoskeletal_info_section_patient_id_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: genitourinary_info
+            baseColumnNames: section_patient_id
+            referencedTableName: section_patient
+            referencedColumnNames: id
+            constraintName: genitourinary_info_section_patient_id_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: respiratory_info
+            baseColumnNames: section_patient_id
+            referencedTableName: section_patient
+            referencedColumnNames: id
+            constraintName: respiratory_info_section_patient_id_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: neurological_info
+            baseColumnNames: section_patient_id
+            referencedTableName: section_patient
+            referencedColumnNames: id
+            constraintName: neurological_info_section_patient_id_foreign_key
+
+        # Add foreign key constraints for created_by and modified_by
+        - addForeignKeyConstraint:
+            baseTableName: patient_medications
+            baseColumnNames: created_by
+            referencedTableName: user
+            referencedColumnNames: id
+            constraintName: patient_medications_created_by_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: patient_medications
+            baseColumnNames: modified_by
+            referencedTableName: user
+            referencedColumnNames: id
+            constraintName: patient_medications_modified_by_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: lab_values
+            baseColumnNames: created_by
+            referencedTableName: user
+            referencedColumnNames: id
+            constraintName: lab_values_created_by_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: lab_values
+            baseColumnNames: modified_by
+            referencedTableName: user
+            referencedColumnNames: id
+            constraintName: lab_values_modified_by_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: patient_medications
+            baseColumnNames: medication_id
+            referencedTableName: medications
+            referencedColumnNames: id
+            constraintName: patient_medications_medications_id_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: pain_scale_result
+            baseColumnNames: pain_scale_id
+            referencedTableName: pain_scale
+            referencedColumnNames: id
+            constraintName: pain_scale_result_pain_scale_id_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: pain_scale_result
+            baseColumnNames: created_by
+            referencedTableName: user
+            referencedColumnNames: id
+            constraintName: pain_scale_result_created_by_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: pain_scale_result
+            baseColumnNames: modified_by
+            referencedTableName: user
+            referencedColumnNames: id
+            constraintName: pain_scale_result_modified_by_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: vital_signs
+            baseColumnNames: created_by
+            referencedTableName: user
+            referencedColumnNames: id
+            constraintName: vital_signs_created_by_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: vital_signs
+            baseColumnNames: modified_by
+            referencedTableName: user
+            referencedColumnNames: id
+            constraintName: vital_signs_modified_by_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: intake_output
+            baseColumnNames: created_by
+            referencedTableName: user
+            referencedColumnNames: id
+            constraintName: intake_output_created_by_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: intake_output
+            baseColumnNames: modified_by
+            referencedTableName: user
+            referencedColumnNames: id
+            constraintName: intake_output_modified_by_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: waldo_diagram
+            baseColumnNames: created_by
+            referencedTableName: user
+            referencedColumnNames: id
+            constraintName: waldo_diagram_created_by_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: waldo_diagram
+            baseColumnNames: modified_by
+            referencedTableName: user
+            referencedColumnNames: id
+            constraintName: waldo_diagram_modified_by_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: adl
+            baseColumnNames: created_by
+            referencedTableName: user
+            referencedColumnNames: id
+            constraintName: adl_created_by_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: adl
+            baseColumnNames: modified_by
+            referencedTableName: user
+            referencedColumnNames: id
+            constraintName: adl_modified_by_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: note
+            baseColumnNames: created_by
+            referencedTableName: user
+            referencedColumnNames: id
+            constraintName: note_created_by_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: note
+            baseColumnNames: modified_by
+            referencedTableName: user
+            referencedColumnNames: id
+            constraintName: note_modified_by_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: gastrointestinal_info
+            baseColumnNames: created_by
+            referencedTableName: user
+            referencedColumnNames: id
+            constraintName: gastrointestinal_info_created_by_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: gastrointestinal_info
+            baseColumnNames: modified_by
+            referencedTableName: user
+            referencedColumnNames: id
+            constraintName: gastrointestinal_info_modified_by_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: musculoskeletal_info
+            baseColumnNames: created_by
+            referencedTableName: user
+            referencedColumnNames: id
+            constraintName: musculoskeletal_info_created_by_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: musculoskeletal_info
+            baseColumnNames: modified_by
+            referencedTableName: user
+            referencedColumnNames: id
+            constraintName: musculoskeletal_info_modified_by_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: genitourinary_info
+            baseColumnNames: created_by
+            referencedTableName: user
+            referencedColumnNames: id
+            constraintName: genitourinary_info_created_by_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: genitourinary_info
+            baseColumnNames: modified_by
+            referencedTableName: user
+            referencedColumnNames: id
+            constraintName: genitourinary_info_modified_by_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: respiratory_info
+            baseColumnNames: created_by
+            referencedTableName: user
+            referencedColumnNames: id
+            constraintName: respiratory_info_created_by_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: respiratory_info
+            baseColumnNames: modified_by
+            referencedTableName: user
+            referencedColumnNames: id
+            constraintName: respiratory_info_modified_by_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: neurological_info
+            baseColumnNames: created_by
+            referencedTableName: user
+            referencedColumnNames: id
+            constraintName: neurological_info_created_by_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: neurological_info
+            baseColumnNames: modified_by
+            referencedTableName: user
+            referencedColumnNames: id
+            constraintName: neurological_info_modified_by_foreign_key
+
+        - addForeignKeyConstraint:
+            baseTableName: patient_history
+            baseColumnNames: patient_id
+            referencedTableName: patient
+            referencedColumnNames: id
+            constraintName: patient_history_patient_id_foreign_key
+        - addForeignKeyConstraint:
+            baseTableName: patient_orders
+            baseColumnNames: patient_id
+            referencedTableName: patient
+            referencedColumnNames: id
+            constraintName: patient_orders_patient_id_foreign_key
