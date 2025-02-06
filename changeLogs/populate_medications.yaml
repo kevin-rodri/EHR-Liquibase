@@ -1,0 +1,65 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: your_name
+      changes:
+        - insert:
+            tableName: medications
+            columns:
+              - column:
+                  name: id
+                  value: "UUID()"
+              - column:
+                  name: drug_name
+                  value: "Aspirin"
+              - column:
+                  name: generic_name
+                  value: "Acetylsalicylic Acid"
+        - insert:
+            tableName: medications
+            columns:
+              - column:
+                  name: id
+                  value: "UUID()"
+              - column:
+                  name: drug_name
+                  value: "Advil"
+              - column:
+                  name: generic_name
+                  value: "Ibuprofen"
+        - insert:
+            tableName: medications
+            columns:
+              - column:
+                  name: id
+                  value: "UUID()"
+              - column:
+                  name: drug_name
+                  value: "Paracetamol"
+              - column:
+                  name: generic_name
+                  value: "Acetaminophen"
+        - insert:
+            tableName: medications
+            columns:
+              - column:
+                  name: id
+                  value: "UUID()"
+              - column:
+                  name: drug_name
+                  value: "Xanax"
+              - column:
+                  name: generic_name
+                  value: "Alprazolam"
+        - insert:
+            tableName: medications
+            columns:
+              - column:
+                  name: id
+                  value: "UUID()"
+              - column:
+                  name: drug_name
+                  value: "Tylenol"
+              - column:
+                  name: generic_name
+                  value: "Acetaminophen"
